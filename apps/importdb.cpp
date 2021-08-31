@@ -14,11 +14,11 @@ int main(int argc, const char ** argv) {
     rocksdb::DB* db;
     rocksdb::Options options;
     options.create_if_missing = true;
-    rocksdb::Status status = rocksdb::DB::Open(options, "/Users/rui/Downloads/datasets/sf1db", &db);
+    rocksdb::Status status = rocksdb::DB::Open(options, "/home/wr/dataset/sf1db", &db);
     assert(status.ok());
     std::cout << "Open rocksdb success." << std::endl;
 
-    importGraph("/Users/rui/Downloads/datasets/SF1", db, m);
+    importGraph("/home/wr/dataset/SF1", db, m);
 
     std::string key3 = "4139|lastName", value3;
     status = db->Get(rocksdb::ReadOptions(), key3, &value3);

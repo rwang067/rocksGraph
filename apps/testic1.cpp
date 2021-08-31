@@ -38,7 +38,7 @@ public:
     ~ Res();
 
     void prinfRes(){
-        std::string res_filename = "../datasets/testResults/interactive_1_res.txt";
+        std::string res_filename = "../../dataset/testResults/interactive_1_res.txt";
         std::ofstream ofs;
         ofs.open(res_filename.c_str(), std::ofstream::out | std::ofstream::app );
         ofs << "pid = " << pid << std::endl;
@@ -99,7 +99,7 @@ std::string queryNeighbors(std::string prefix_res, rocksdb::DB* db){
 void testIC1(std::string queryId, std::string queryName, rocksdb::DB* db, metrics &m){
     m.start_time("testic1");
     m.start_time("testic1-0-Start");
-    std::string res_filename = "../datasets/testResults/interactive_1_res.txt";
+    std::string res_filename = "../../dataset/testResults/interactive_1_res.txt";
     std::ofstream ofs;
     ofs.open(res_filename.c_str(), std::ofstream::out | std::ofstream::app );
     ofs << "\nTestIC1 for queryId = " << queryId << ", queryName = " << queryName << "." << std::endl;
@@ -217,7 +217,7 @@ int main(int argc, const char ** argv) {
     m.start_time("Runtime(s)");
 
     /* Basic arguments for application */
-    std::string filename = get_option_string("file", "../datasets/SF1/substitution_parameters/interactive_1_param.txt");  // Base filename
+    std::string filename = get_option_string("file", "../../dataset/SF1/substitution_parameters/interactive_1_param.txt");  // Base filename
 
     FILE * inf = fopen(filename.c_str(), "r");
     if (inf == NULL) {
@@ -249,7 +249,7 @@ int main(int argc, const char ** argv) {
     rocksdb::DB* db;
     rocksdb::Options options;
     options.create_if_missing = true;
-    rocksdb::Status status = rocksdb::DB::Open(options, "/Users/rui/Downloads/datasets/sf1db", &db);
+    rocksdb::Status status = rocksdb::DB::Open(options, "/home/wr/dataset/sf1db", &db);
     assert(status.ok());
     std::cout << "Open rocksdb success." << std::endl;
 

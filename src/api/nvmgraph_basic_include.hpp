@@ -32,10 +32,10 @@ while(t != NULL) {
         basic_reporter rep;
         m.report(rep);
     } else if (repname == "file") {
-        file_reporter rep(get_option_string("metrics.reporter.filename", "graphwalker_metrics.txt"));
+        file_reporter rep(get_option_string("metrics.reporter.filename", "rocksgraph_metrics.txt"));
         m.report(rep);
     } else if (repname == "html") {
-        html_reporter rep(get_option_string("metrics.reporter.htmlfile", "graphwalker_metrics.html"));
+        html_reporter rep(get_option_string("metrics.reporter.htmlfile", "rocksgraph_metrics.html"));
         m.report(rep);
     } else {
         logstream(LOG_WARNING) << "Could not find metrics reporter with name [" << repname << "], ignoring." << std::endl;

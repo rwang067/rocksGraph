@@ -66,7 +66,7 @@
               std::string statistic_filename = filename + ".statistics";
               std::ofstream ofs;
               ofs.open(statistic_filename.c_str(), std::ofstream::out | std::ofstream::app );
-              if( it->first == "00_runtime")
+              if( it->first == "Runtime(s)")
                   ofs << ent.value << "  \t  " ;
               else if( it->first == "1_chooseBlock")
                   ofs << ent.value << "  \t  " ;

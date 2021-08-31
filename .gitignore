@@ -1,7 +1,7 @@
 *.[oa]
 bin/*
-graphwalker_metrics.txt
-graphwalker_metrics.txt.statistics
+rocksgraph_metrics.txt
+rocksgraph_metrics.txt.statistics
 ./run.sh
 ./monitor/*.csv
 .vscode/

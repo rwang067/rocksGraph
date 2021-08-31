@@ -16,7 +16,7 @@ void importVertices(std::string filename, std::string vlabel, rocksdb::DB* db){
     logstream(LOG_INFO) << " s= " << s << std::endl;
     std::vector<std::string> keys;
     assert(string_split(s, '|', keys) == 0);
-    int k = keys.size();
+    unsigned k = keys.size();
     keys[k-1].pop_back();
     // for(int i = 0; i < k; i++){
     //     logstream(LOG_DEBUG) << "keys[" << i << "] = " << keys[i] << std::endl;
@@ -53,7 +53,7 @@ void importVertices(std::string filename, std::string vlabel, rocksdb::DB* db){
         status = db->Put(rocksdb::WriteOptions(), values[0], vlabel);
         assert(status.ok());
         // Put vertex' properties
-        for(int i = 1; i < k; i++){
+        for(unsigned i = 1; i < k; i++){
             key = values[0] + "|" + keys[i];
             status = db->Put(rocksdb::WriteOptions(), key, values[i]);
             assert(status.ok());
@@ -95,7 +95,7 @@ void importEdges(std::string filename, std::string elabel, std::string tlabel, r
     logstream(LOG_INFO) << " s= " << s << std::endl;
     std::vector<std::string> keys;
     assert(string_split(s, '|', keys) == 0);
-    int k = keys.size();
+    unsigned k = keys.size();
     keys[k-1].pop_back();
     // for(int i = 0; i < k; i++){
     //     logstream(LOG_DEBUG) << "keys[" << i << "] = " << keys[i] << std::endl;
@@ -119,7 +119,7 @@ void importEdges(std::string filename, std::string elabel, std::string tlabel, r
         status = db->Put(rocksdb::WriteOptions(), edge_key, "");
         assert(status.ok());
         // Put edge properties
-        for(int i = 2; i < k; i++){
+        for(unsigned i = 2; i < k; i++){
             key = edge_key + "|" + keys[i];
             status = db->Put(rocksdb::WriteOptions(), key, values[i]);
             assert(status.ok());

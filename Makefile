@@ -1,9 +1,8 @@
 INCFLAGS = -I/usr/local/include/ -I./src/
 
 CPP = g++ -std=c++11
-# CPPFLAGS = -g -O0 $(INCFLAGS)  -fopenmp -Wall -Wno-strict-aliasing -lrocksdb  # 注意添加链接库
-CPPFLAGS = -g -O0 $(INCFLAGS) -Wall -Wno-strict-aliasing -lrocksdb  # 注意添加链接库
-LINKERFLAGS = -lz
+CPPFLAGS = -g -O0 $(INCFLAGS) -Wall -Wno-strict-aliasing # -fopenmp # 注意添加链接库
+LINKERFLAGS = -lrocksdb -lz -lpthread -ldl
 DEBUGFLAGS = -g -ggdb $(INCFLAGS)
 HEADERS=$(shell find . -name '*.hpp')
 

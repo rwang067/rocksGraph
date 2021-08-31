@@ -26,8 +26,8 @@
  */
 
   
-#ifndef GRAPHWALKER_METRICS
-#define GRAPHWALKER_METRICS
+#ifndef ROCKSGRAPH_METRICS
+#define ROCKSGRAPH_METRICS
 
 #include <cstring>
 #include <map>
