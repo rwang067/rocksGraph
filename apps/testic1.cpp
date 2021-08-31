@@ -38,47 +38,29 @@ public:
     ~ Res();
 
     void prinfRes(){
-        std::string res_filename = "../../dataset/testResults/interactive_1_res.txt";
+        std::string TestPath = get_option_string("TestPath");  // test results path
         std::ofstream ofs;
-        ofs.open(res_filename.c_str(), std::ofstream::out | std::ofstream::app );
-        ofs << "pid = " << pid << std::endl;
-        ofs << "lastname = " << lastname << std::endl;
-        ofs << "dis = " << dis << std::endl;
-        ofs << "birthday = " << birthday << std::endl;
-        ofs << "creationDate = " << creationDate << std::endl;
-        ofs << "gender = " << gender << std::endl;
-        ofs << "browserUsed = " << browserUsed << std::endl;
-        ofs << "locationIP = " << locationIP << std::endl;
-        ofs << "email = " << email << std::endl;
-        ofs << "speaks = " << speaks << std::endl;
-        ofs << "cityName = " << cityName << std::endl;
-        ofs << "universityName = " << universityName << std::endl;
-        ofs << "universityClassYear = " << universityClassYear << std::endl;
-        ofs << "universityCity = " << universityCity << std::endl;
-        ofs << "companyName = " << companyName << std::endl;
-        ofs << "companyWorkFrom = " << companyWorkFrom << std::endl;
-        ofs << "companyCountry = " << companyCountry << std::endl;
-        ofs << std::endl;
+        ofs.open(TestPath.c_str(), std::ofstream::out | std::ofstream::app );
+        // logstream(LOG_DEBUG) << "pid = " << pid << "\n" 
+        ofs << "pid = " << pid << "\n" 
+            << "lastname = " << lastname << "\n" 
+            << "dis = " << dis << "\n" 
+            << "birthday = " << birthday << "\n" 
+            << "creationDate = " << creationDate << "\n" 
+            << "gender = " << gender << "\n" 
+            << "browserUsed = " << browserUsed << "\n" 
+            << "locationIP = " << locationIP << "\n" 
+            << "email = " << email << "\n" 
+            << "speaks = " << speaks << "\n" 
+            << "cityName = " << cityName << "\n" 
+            << "universityName = " << universityName << "\n" 
+            << "universityClassYear = " << universityClassYear << "\n" 
+            << "universityCity = " << universityCity << "\n" 
+            << "companyName = " << companyName << "\n" 
+            << "companyWorkFrom = " << companyWorkFrom << "\n" 
+            << "companyCountry = " << companyCountry << "\n" 
+            << std::endl;
         ofs.close();
-
-        // logstream(LOG_DEBUG) << "pid = " << pid << std::endl;
-        // logstream(LOG_INFO) << "lastname = " << lastname << std::endl;
-        // logstream(LOG_INFO) << "dis = " << dis << std::endl;
-        // logstream(LOG_INFO) << "birthday = " << birthday << std::endl;
-        // logstream(LOG_INFO) << "creationDate = " << creationDate << std::endl;
-        // logstream(LOG_INFO) << "gender = " << gender << std::endl;
-        // logstream(LOG_INFO) << "browserUsed = " << browserUsed << std::endl;
-        // logstream(LOG_INFO) << "locationIP = " << locationIP << std::endl;
-        // logstream(LOG_INFO) << "email = " << email << std::endl;
-        // logstream(LOG_INFO) << "speaks = " << speaks << std::endl;
-        // logstream(LOG_INFO) << "cityName = " << cityName << std::endl;
-        // logstream(LOG_INFO) << "universityName = " << universityName << std::endl;
-        // logstream(LOG_INFO) << "universityClassYear = " << universityClassYear << std::endl;
-        // logstream(LOG_INFO) << "universityCity = " << universityCity << std::endl;
-        // logstream(LOG_INFO) << "companyName = " << companyName << std::endl;
-        // logstream(LOG_INFO) << "companyWorkFrom = " << companyWorkFrom << std::endl;
-        // logstream(LOG_INFO) << "companyCountry = " << companyCountry << std::endl;
-        // logstream(LOG_INFO) << std::endl;
     }
 };
 
@@ -99,12 +81,12 @@ std::string queryNeighbors(std::string prefix_res, rocksdb::DB* db){
 void testIC1(std::string queryId, std::string queryName, rocksdb::DB* db, metrics &m){
     m.start_time("testic1");
     m.start_time("testic1-0-Start");
-    std::string res_filename = "../../dataset/testResults/interactive_1_res.txt";
+    std::string TestPath = get_option_string("TestPath");  // test results path
     std::ofstream ofs;
-    ofs.open(res_filename.c_str(), std::ofstream::out | std::ofstream::app );
-    ofs << "\nTestIC1 for queryId = " << queryId << ", queryName = " << queryName << "." << std::endl;
+    ofs.open(TestPath.c_str(), std::ofstream::out | std::ofstream::app );
+    ofs << "\nTestIC1 for queryId = " << queryId << ", queryName = " << queryName << ":" << std::endl;
     ofs.close();
-    logstream(LOG_INFO) << "testIC1 for queryId = " << queryId << ", queryName = " << queryName << "." << std::endl;
+    logstream(LOG_INFO) << "testIC1 for queryId = " << queryId << ", queryName = " << queryName << "..." << std::endl;
 
     std::vector<Res*> friends_with_certern_name;
     std::queue<std::pair<std::string, int> > neighbors;
@@ -206,18 +188,8 @@ void testIC1(std::string queryId, std::string queryName, rocksdb::DB* db, metric
     m.stop_time("testic1");
 }
 
-
-int main(int argc, const char ** argv) {
-
-    set_argc(argc, argv);
-
-    /* Metrics object for keeping track of performance count_invectorers
-     and other information. Currently required. */
-    metrics m("test-IC1");
-    m.start_time("Runtime(s)");
-
-    /* Basic arguments for application */
-    std::string filename = get_option_string("file", "../../dataset/SF1/substitution_parameters/interactive_1_param.txt");  // Base filename
+std::vector<std::pair<std::string, std::string> > readQueries(std::string filename){
+    std::vector<std::pair<std::string, std::string> > queries;
 
     FILE * inf = fopen(filename.c_str(), "r");
     if (inf == NULL) {
@@ -225,7 +197,6 @@ int main(int argc, const char ** argv) {
     }
     assert(inf != NULL);
 
-    std::vector<std::pair<std::string, std::string> > queries;
     char s[1024];
     while(fgets(s, 1024, inf) != NULL) {
         if (s[0] == '#') continue; // Comment
@@ -245,13 +216,42 @@ int main(int argc, const char ** argv) {
         logstream(LOG_INFO) << " std::string(t1) = " << std::string(t1) << ", std::string(t2) = " << std::string(t2) << "." << std::endl;
         queries.push_back(make_pair(std::string(t1), std::string(t2)));
     }
+    return queries;
+}
+
+
+int main(int argc, const char ** argv) {
+
+    set_argc(argc, argv);
+
+    /* Metrics object for keeping track of performance count_invectorers
+     and other information. Currently required. */
+    metrics m("test-IC1");
+    m.start_time("Runtime(s)");
+
+    /* Basic arguments for application */
+    // std::string filename = get_option_string("file", "../../dataset/SF1/substitution_parameters/interactive_1_param.txt");  // Base filename
+    std::string DBPath = get_option_string("DBPath");  // database path
+    std::string GraphPath = get_option_string("GraphPath");  // graph dataset path
+    std::string IC1_Param = GraphPath + "/substitution_parameters/interactive_1_param.txt";
+    std::string TestPath = get_option_string("TestPath");  // test results path
+    logstream(LOG_INFO) << "DBPath = " << DBPath << "\n" 
+                         << "GraphPath = " << GraphPath << "\n" 
+                         << "IC1_Param = " << IC1_Param << "\n" 
+                         << "TestPath = " << TestPath << std::endl;
+    
+    std::ofstream ofs(TestPath.c_str(), std::ofstream::out);
+    ofs << "Begin TestIC1!" << std::endl;
+    ofs.close();
+
+    std::vector<std::pair<std::string, std::string> > queries = readQueries(IC1_Param);
 
     rocksdb::DB* db;
     rocksdb::Options options;
     options.create_if_missing = true;
-    rocksdb::Status status = rocksdb::DB::Open(options, "/home/wr/dataset/sf1db", &db);
+    rocksdb::Status status = rocksdb::DB::Open(options, DBPath, &db);
     assert(status.ok());
-    std::cout << "Open rocksdb success." << std::endl;
+    logstream(LOG_DEBUG) << "Open rocksdb success." << std::endl;
 
     std::string queryId, queryName;
     for(auto it = queries.begin(); it != queries.end(); it++){

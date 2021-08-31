@@ -1,3 +1,6 @@
 # GraphWalker configuration.
 # Commandline parameters override values in the configuration file.
 
+DBPath = /home/wr/dataset/sf1db
+GraphPath = /home/wr/dataset/SF1
+TestPath = ../../dataset/testResults/interactive_1_res.txt

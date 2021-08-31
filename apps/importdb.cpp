@@ -11,14 +11,17 @@ int main(int argc, const char ** argv) {
 
     m.start_time("testdb");
 
+    std::string DBPath = get_option_string("DBPath");  // database path
+    std::string GraphPath = get_option_string("GraphPath");  // graph dataset path
+
     rocksdb::DB* db;
     rocksdb::Options options;
     options.create_if_missing = true;
-    rocksdb::Status status = rocksdb::DB::Open(options, "/home/wr/dataset/sf1db", &db);
+    rocksdb::Status status = rocksdb::DB::Open(options, DBPath, &db);
     assert(status.ok());
     std::cout << "Open rocksdb success." << std::endl;
 
-    importGraph("/home/wr/dataset/SF1", db, m);
+    importGraph(GraphPath, db, m);
 
     std::string key3 = "4139|lastName", value3;
     status = db->Get(rocksdb::ReadOptions(), key3, &value3);
