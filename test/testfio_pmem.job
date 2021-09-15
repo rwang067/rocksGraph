@@ -1,0 +1,49 @@
+#
+# run command for this workload:
+# numactl -N 1 fio Libpmemjob.fio
+# numactl -N 1 fio --output=testfio_pmem.json --output-format=json testfio_pmem.job
+# 
+# it binds this FIO workload to CPU 1 only. It should be set according to /dev/pmem1 socket's number
+#
+[global]
+bs=4k
+thread
+group_reporting
+norandommap
+overwrite=1
+thinktime=0
+sync=1
+direct=1
+
+ioengine=libpmem
+iodepth=1
+
+# by yaowenxu
+# Preparing namespace with commands:
+# mkfs.ext4 /dev/pmem1
+# mount /dev/pmem1 /mnt/pmem/ -o dax
+#
+
+directory=/mnt/pmem/wr  # I'm working on directory; each of 'numjobs' gets its own file to work with
+size=10GB  # Each file will have this size; so in summary they will fill the whole namespace
+unlink=0
+
+time_based
+runtime=300
+ramp_time=30
+
+[libpmem-seqwrite]
+rw=write
+stonewall
+
+[libpmem-seqread]
+rw=read
+stonewall
+
+[libpmem-randwrite]
+rw=randwrite
+stonewall
+
+[libpmem-randread]
+rw=randread
+stonewall
